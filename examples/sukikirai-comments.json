@@ -1,0 +1,31 @@
+{
+  "version": "1.0",
+  "kind": "dataset",
+  "entity": "comment",
+  "mode": "snapshot",
+  "source": {
+    "type": "mcp",
+    "agent": "claude-code",
+    "name": "sukikirai-comments"
+  },
+  "records": [
+    { "id": "c001", "target": "パクチー", "sentiment": "like", "body": "香りが最高。エスニック料理には欠かせないし、これがないと物足りない。", "author": "midori", "postedAt": "2026-06-01T09:12:00Z", "upvotes": 42, "sourceUrl": "https://example.com/threads/1#c001" },
+    { "id": "c002", "target": "パクチー", "sentiment": "dislike", "body": "無理。石鹸を食べているみたいな味がして、どうしても受け付けない。", "author": "kenta", "postedAt": "2026-06-01T10:03:00Z", "upvotes": 88, "sourceUrl": "https://example.com/threads/1#c002" },
+    { "id": "c003", "target": "きのこの山", "sentiment": "like", "body": "チョコとクラッカーのバランスが完璧。たけのこ派とは分かり合えない。", "author": "sora", "postedAt": "2026-06-02T14:20:00Z", "upvotes": 61, "sourceUrl": "https://example.com/threads/2#c003" },
+    { "id": "c004", "target": "たけのこの里", "sentiment": "like", "body": "クッキー生地がしっとりしていて、こっちの方が断然おいしい。", "author": "haru", "postedAt": "2026-06-02T15:44:00Z", "upvotes": 73, "sourceUrl": "https://example.com/threads/2#c004" },
+    { "id": "c005", "target": "きのこの山", "sentiment": "dislike", "body": "ぽろぽろこぼれるのが苦手。食べにくいだけ。", "author": "ren", "postedAt": "2026-06-03T08:00:00Z", "upvotes": 12, "sourceUrl": "https://example.com/threads/2#c005" },
+    { "id": "c006", "target": "納豆", "sentiment": "like", "body": "毎朝食べてる。あの粘りと香りが体に良さそうで手放せない。", "author": "yuki", "postedAt": "2026-06-03T11:31:00Z", "upvotes": 55, "sourceUrl": "https://example.com/threads/3#c006" },
+    { "id": "c007", "target": "納豆", "sentiment": "dislike", "body": "匂いが部屋に残るのがどうしても嫌。味以前の問題。", "author": "aoi", "postedAt": "2026-06-04T07:15:00Z", "upvotes": 29, "sourceUrl": "https://example.com/threads/3#c007" },
+    { "id": "c008", "target": "コリアンダー", "sentiment": "neutral", "body": "料理によっては合うけど、主張が強いときもある。ケースバイケース。", "author": "midori", "postedAt": "2026-06-04T18:52:00Z", "upvotes": 8, "sourceUrl": "https://example.com/threads/1#c008" },
+    { "id": "c009", "target": "ホットコーヒー", "sentiment": "like", "body": "朝の一杯がないと始まらない。深煎りのビターな感じが好み。", "author": "kenta", "postedAt": "2026-06-05T06:40:00Z", "upvotes": 47, "sourceUrl": "https://example.com/threads/4#c009" },
+    { "id": "c010", "target": "パイナップルピザ", "sentiment": "dislike", "body": "甘いのとしょっぱいのが混ざるのが理解できない。ピザに果物はいらない。", "author": "sora", "postedAt": "2026-06-05T20:10:00Z", "upvotes": 134, "sourceUrl": "https://example.com/threads/5#c010" },
+    { "id": "c011", "target": "パイナップルピザ", "sentiment": "like", "body": "実は好き。ハムの塩気とパイナップルの酸味が意外と合う。", "author": "haru", "postedAt": "2026-06-06T12:05:00Z", "upvotes": 63, "sourceUrl": "https://example.com/threads/5#c011" },
+    { "id": "c012", "target": "セロリ", "sentiment": "dislike", "body": "筋と青臭さが苦手。スープに少しでも入ると気づいてしまう。", "author": "ren", "postedAt": "2026-06-06T13:47:00Z", "upvotes": 21, "sourceUrl": "https://example.com/threads/6#c012" },
+    { "id": "c013", "target": "セロリ", "sentiment": "like", "body": "スティックにして味噌つけて食べると最高。あの食感がクセになる。", "author": "yuki", "postedAt": "2026-06-07T09:22:00Z", "upvotes": 18, "sourceUrl": "https://example.com/threads/6#c013" },
+    { "id": "c014", "target": "ブラックコーヒー", "sentiment": "neutral", "body": "飲めるけど、正直ミルクを入れた方が好き。気分による。", "author": "aoi", "postedAt": "2026-06-07T16:03:00Z", "upvotes": 5, "sourceUrl": "https://example.com/threads/4#c014" },
+    { "id": "c015", "target": "たけのこの里", "sentiment": "dislike", "body": "甘すぎて途中で飽きる。きのこの方が食べ続けられる。", "author": "kenta", "postedAt": "2026-06-08T10:30:00Z", "upvotes": 34, "sourceUrl": "https://example.com/threads/2#c015" },
+    { "id": "c016", "target": "レバー", "sentiment": "dislike", "body": "焼き鳥でもどうしても選べない。あの独特の風味が苦手。", "author": "sora", "postedAt": "2026-06-08T19:18:00Z", "upvotes": 40, "sourceUrl": "https://example.com/threads/7#c016" },
+    { "id": "c017", "target": "レバー", "sentiment": "like", "body": "鉄分補給に最適だし、ニラと炒めると本当においしい。", "author": "midori", "postedAt": "2026-06-09T12:44:00Z", "upvotes": 27, "sourceUrl": "https://example.com/threads/7#c017" },
+    { "id": "c018", "target": "パクチー", "sentiment": "like", "body": "慣れたら病みつき。フォーに山盛りにして食べるのが幸せ。", "author": "haru", "postedAt": "2026-06-09T21:00:00Z", "upvotes": 51, "sourceUrl": "https://example.com/threads/1#c018" }
+  ]
+}

@@ -1,73 +1,73 @@
 # 🔥 Kiln
 
-**Data goes in, an admin UI comes out.**
+**データを入れると、管理画面が出てくる。**
 
-Kiln is a runtime that receives structured data an AI has already collected and
-normalized, and auto-generates a full admin surface for it — table, filters,
-search, sort, pagination, detail view, and chart candidates. Like a pottery
-kiln, the shape is given by the kiln, not the clay: Kiln is infrastructure, not
-the artifact.
+Kiln は、AIが収集・正規化した構造化データを受け取り、その場で管理画面一式
+（テーブル・フィルタ・検索・ソート・ページネーション・詳細ビュー・グラフ候補）
+を自動生成するランタイムです。陶芸の窯と同じで、形を与えるのは窯の側であって
+素材ではありません。Kiln は作品ではなくインフラです。
 
-The AI's job is to **collect and normalize**. Kiln's job is everything after:
-validate → infer schema → plan UI → render. Kiln never scrapes, never asks an
-AI to write React/HTML/CSS, and never becomes a general ETL tool.
+AIの役割は **収集と正規化** まで。そこから先（検証 → schema推定 → UI設計 →
+描画）は全部 Kiln がやります。Kiln はスクレイピングをしないし、AIに
+React/HTML/CSS を書かせることもしません。汎用ETLツールにもしません。
 
-> This is the Phase 1 (MCP-first MVP) implementation. See [`DESIGN.md`](./DESIGN.md)
-> for the full design and roadmap.
+> これは Phase 1（MCP-first MVP）の実装です。全体設計とロードマップは
+> [`DESIGN.md`](./DESIGN.md) を参照してください。
 
-## How it works
+## しくみ
 
 ```
-AI agent (Claude Code, …)          ← collects + normalizes data
-      │  push_dataset / append_records (MCP)
+AIエージェント（Claude Code など）      ← データの収集・正規化はここで完結
+      │  push_dataset / append_records（MCP）
       ▼
 kiln-mcp  ──►  Validator (Zod)  ──►  Schema Inferencer  ──►  UI Planner
       │                                                          │
       ▼                                                          ▼
-Postgres (raw_specs · datasets · records)              Next.js admin UI
+Postgres（raw_specs・datasets・records）              Next.js 管理画面
 ```
 
-An agent pushes a **DatasetSpec** through the MCP server; Kiln stores it,
-infers the schema (types, roles, filters), and the Next.js app renders a
-filterable admin screen at a URL the agent gets back. Filtering, sorting and
-search all run in Postgres (`§8.1`), so the browser stays thin.
+エージェントが **DatasetSpec** を MCP サーバーに投入すると、Kiln が保存して
+schema（型・role・フィルタ）を推定し、Next.js アプリがフィルタ付きの管理画面を
+レンダリングします。返ってきた URL を開けば、もう画面ができています。
+フィルタ・ソート・検索はすべて Postgres 側で実行されるので（§8.1）、
+ブラウザ側は薄いままです。
 
-## Repository layout
+## リポジトリ構成
 
-| Package | What it is |
+| パッケージ | 中身 |
 | --- | --- |
-| `packages/core/dataset-spec` | `DatasetSpec` types + Zod schema (`mode`, `upsertKey`) |
-| `packages/core/schema-inferencer` | Type / role / filter inference from records (§5) |
-| `packages/core/validator` | Validate a spec + produce a dry-run inference preview |
-| `packages/core/ui-planner` | Pure schema → UI plan (columns, filters, detail, charts) |
-| `packages/db` | Drizzle schema + repository + SQL-side record queries |
+| `packages/core/dataset-spec` | `DatasetSpec` の型 + Zod schema（`mode`・`upsertKey`） |
+| `packages/core/schema-inferencer` | レコードからの型 / role / フィルタ推定（§5） |
+| `packages/core/validator` | spec検証 + dry-runの推定プレビュー |
+| `packages/core/ui-planner` | schema → UIプラン（列・フィルタ・詳細・グラフ）の純関数 |
+| `packages/db` | Drizzle schema + リポジトリ + SQL側のレコードクエリ |
 | `packages/renderer-react` | `AutoTable` / `AutoFilters` / `AutoDetail` / `AutoChart` / `DatasetExplorer` + Storybook |
-| `apps/mcp` | The `kiln-mcp` MCP server (stdio) |
-| `apps/web` | Next.js App Router viewer |
+| `apps/mcp` | `kiln-mcp` MCPサーバー（stdio） |
+| `apps/web` | Next.js App Router の閲覧画面 |
 
-The `core` and `renderer-react` packages are framework-agnostic by design so a
-`@kiln/renderer-vue` could be added later without touching them.
+`core` と `renderer-react` は framework非依存で切ってあるので、あとから
+`@kiln/renderer-vue` を追加してもこれらに手を入れずに済みます。
 
-## Quick start
+## クイックスタート
 
-Requirements: Node ≥ 20, pnpm 10, a Postgres instance.
+必要なもの: Node ≥ 20 / pnpm 10 / Postgresインスタンス
 
 ```bash
 pnpm install
-cp .env.example .env         # set DATABASE_URL
+cp .env.example .env         # DATABASE_URL を設定
 
-# create the kiln schema + tables
+# kiln スキーマとテーブルを作成
 export DATABASE_URL=postgresql://postgres@localhost:5432/kiln
 pnpm build
 pnpm --filter @kiln/db migrate
 
-# run the viewer
+# 閲覧画面を起動
 pnpm dev:web                 # http://localhost:3000
 ```
 
-### Push the sample dataset
+### サンプルデータを投入する
 
-Register the MCP server with your agent (stdio):
+MCPサーバーをエージェントに登録します（stdio）:
 
 ```json
 {
@@ -84,30 +84,30 @@ Register the MCP server with your agent (stdio):
 }
 ```
 
-Then call `push_dataset` with the contents of
-[`examples/sukikirai-comments.json`](./examples/sukikirai-comments.json). The
-tool returns a URL — open it and the filterable table is already there.
+そのうえで、[`examples/sukikirai-comments.json`](./examples/sukikirai-comments.json)
+の中身を `push_dataset` に渡します。ツールが URL を返すので、それを開くと
+フィルタ付きテーブルがもう出来上がっています。
 
-## MCP tools
+## MCPツール
 
-| Tool | Purpose |
+| ツール | 役割 |
 | --- | --- |
-| `push_dataset` | Store a DatasetSpec (snapshot replaces; append upserts by `upsertKey`) |
-| `append_records` | Append/upsert records into an existing dataset |
-| `validate_dataset_spec` | Dry-run: validate + preview the inferred schema, without storing |
-| `list_datasets` | List datasets in a project |
-| `get_dataset` | Fetch a dataset's metadata + inferred schema |
+| `push_dataset` | DatasetSpecを投入（snapshotは全置換、appendは`upsertKey`でupsert） |
+| `append_records` | 既存datasetにレコードを追記/upsert |
+| `validate_dataset_spec` | dry-run: 投入せずに検証 + 推定schemaのプレビュー |
+| `list_datasets` | プロジェクト内のdataset一覧 |
+| `get_dataset` | datasetのメタ情報 + 推定schemaを取得 |
 
-Kiln deliberately has **no** collection tools — collecting data is the agent's
-job, on its side of the boundary.
+Kiln には収集系ツールが **あえて** ありません。データ集めはエージェント側の
+仕事であり、境界の向こう側だからです。
 
-## Development
+## 開発
 
 ```bash
-pnpm test          # build packages, then run all unit tests
-pnpm typecheck     # type-check every package
-pnpm storybook     # renderer-react component gallery (localhost:6006)
+pnpm test          # パッケージをビルドしてから全ユニットテスト
+pnpm typecheck     # 全パッケージの型チェック
+pnpm storybook     # renderer-react のコンポーネントギャラリー（localhost:6006）
 ```
 
-The `@kiln/db` integration tests only run when `DATABASE_URL` is set; otherwise
-they're skipped.
+`@kiln/db` の結合テストは `DATABASE_URL` が設定されているときだけ実行され、
+未設定のときはスキップされます。
